@@ -30,7 +30,10 @@
 //    [self QingQiuMaRequest];
 //    [self BanDinSenFenZenRequest];
 //    [self postRequest2];
-    [self ZaoHUiPasswordRequest];
+//    [self ZaoHUiPasswordRequest];
+//    [self zhifuRequest];
+    [self RoleRequest];
+    
 }
 
 - (void)loadData {
@@ -165,6 +168,251 @@
     //开始任务
     [dataTask resume];
 }
+
+
+#pragma mark 登陆 已经ok
+-(void)LoginRequest{
+    //1，创建会话对象
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    //2,根据会话创建task
+    //    NSURL *url = [NSURL URLWithString:@"http://api.gzzongsi.com/"];
+    //gto 为1找回密码,0或者2绑定手机号
+
+    NSString * const actionRequestURL = @"http://106.14.149.217:10001/ua/member/gto/3";
+    NSURL *url = [NSURL URLWithString:actionRequestURL];
+    
+    
+    //3,创建可变的请求对象
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    //4,请求方法改为post
+    request.HTTPMethod = @"POST";
+    //5,设置请求体
+    //    request.HTTPBody = [@"username=520it&pwd=520it&type=JSON"dataUsingEncoding:NSUTF8StringEncoding];
+    
+    //5,设置请求体
+    //    request.HTTPBody = [@"phone=15920198662&type=0"dataUsingEncoding:NSUTF8StringEncoding];
+    
+    //    NSString *data = [NSString stringWithFormat:@"'phone'=> '15920198662','type'=> '0'"];
+    //    [params setObject:@"15920198662" forKey:@"user_name"];
+    //
+    //    [params setObject:@"123456" forKey:@"password"];
+    
+    //设置请求体
+//    NSDictionary *dict = @{@"phone":@"15920198662"};
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    [params setObject:@"15920198662" forKey:@"user_name"];
+    
+    [params setObject:@"123456" forKey:@"password"];
+    
+    NSString *data = [self DictToJson:params];
+    request.HTTPBody = [data dataUsingEncoding:NSUTF8StringEncoding];
+    
+    //6根据会话创建一个task（发送请求）
+    
+    //    第一个参数：请求对象
+    //    27      第二个参数：completionHandler回调（请求完成【成功|失败】的回调）
+    //    28                 data：响应体信息（期望的数据）
+    //    29                 response：响应头信息，主要是对服务器端的描述
+    //    30                 error：错误信息，如果请求失败，则error有值
+    
+    
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        //        NSLog(@"post dic = %@",dic);
+        NSLog(@"dic是%@",dic);
+        
+        
+    }];
+    //开始任务
+    [dataTask resume];
+}
+
+
+#pragma mark 支付/下单
+-(void)zhifuRequest{
+    //1，创建会话对象
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    //2,根据会话创建task
+    //    NSURL *url = [NSURL URLWithString:@"http://api.gzzongsi.com/"];
+    //gto 为1找回密码,0或者2绑定手机号
+    NSString * const actionRequestURL = @"http://106.14.149.217:10001/ua/memberorder/gto/0";
+    NSURL *url = [NSURL URLWithString:actionRequestURL];
+    
+    //3,创建可变的请求对象
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    //4,请求方法改为post
+    request.HTTPMethod = @"POST";
+    //5,设置请求体
+    //    request.HTTPBody = [@"username=520it&pwd=520it&type=JSON"dataUsingEncoding:NSUTF8StringEncoding];
+    
+    //5,设置请求体
+    //    request.HTTPBody = [@"phone=15920198662&type=0"dataUsingEncoding:NSUTF8StringEncoding];
+    
+    //    NSString *data = [NSString stringWithFormat:@"'phone'=> '15920198662','type'=> '0'"];
+    //    [params setObject:@"15920198662" forKey:@"user_name"];
+    //
+    //    [params setObject:@"123456" forKey:@"password"];
+    
+    //设置请求体
+//    NSDictionary *dict = @{@"phone":@"15920198662"};
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    //    [params setObject:@"15920198662" forKey:@"user_name"];
+//    _userName.text = @"15920198662";
+//    _passWord.text = @"123456";
+//    pay_type = ON;sanfan
+//    YES pinguo
+    [params setObject:@"0" forKey:@"adv_id"];
+//    用户ID
+    [params setObject:@"100002796" forKey:@"uid"];
+    //    渠道ID
+    [params setObject:@"15920198662" forKey:@"user_name"];
+    //    游戏ID
+    [params setObject:@"1" forKey:@"gid"];
+    //    子游戏ID
+    [params setObject:@"1044"  forKey:@"sub_gid"];
+    //    0: IOS
+    [params setObject:@"3" forKey:@"cp_server_id"];
+        [params setObject:@"guofu" forKey:@"server_name"];
+    
+    [params setObject:@"0" forKey:@"platform_id"];
+    [params setObject:@"0" forKey:@"channel_id"];
+    [params setObject:@"0.1" forKey:@"pay_money"];
+    [params setObject:@"IDFA" forKey:@"product_name"];
+    [params setObject:@"IDFA" forKey:@"game_grade"];
+    [params setObject:@"2.0.5" forKey:@"game_ver"];
+    [params setObject:@"IDFA" forKey:@"role_id"];
+    [params setObject:@"IDFA" forKey:@"role_name"];
+
+//    [self varName_game_version]
+    NSString *data = [self DictToJson:params];
+    request.HTTPBody = [data dataUsingEncoding:NSUTF8StringEncoding];
+    
+    //6根据会话创建一个task（发送请求）
+    
+    //    第一个参数：请求对象
+    //    27      第二个参数：completionHandler回调（请求完成【成功|失败】的回调）
+    //    28                 data：响应体信息（期望的数据）
+    //    29                 response：响应头信息，主要是对服务器端的描述
+    //    30                 error：错误信息，如果请求失败，则error有值
+    
+    
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        //        NSLog(@"post dic = %@",dic);
+        NSLog(@"dic是%@",dic);
+        
+        
+    }];
+    //开始任务
+    [dataTask resume];
+}
+
+
+#pragma mark 用户角色表
+// 登陆 注册  角色升级
+-(void)RoleRequest{
+    //1，创建会话对象
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    //2,根据会话创建task
+    //    NSURL *url = [NSURL URLWithString:@"http://api.gzzongsi.com/"];
+    //gto 为1找回密码,0或者2绑定手机号
+    NSString * const actionRequestURL = @"http://106.14.149.217:10001/ua/memberole/gto/0";
+    NSURL *url = [NSURL URLWithString:actionRequestURL];
+    
+    //3,创建可变的请求对象
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    //4,请求方法改为post
+    request.HTTPMethod = @"POST";
+    //5,设置请求体
+    //    request.HTTPBody = [@"username=520it&pwd=520it&type=JSON"dataUsingEncoding:NSUTF8StringEncoding];
+    
+    //5,设置请求体
+    //    request.HTTPBody = [@"phone=15920198662&type=0"dataUsingEncoding:NSUTF8StringEncoding];
+    
+    //    NSString *data = [NSString stringWithFormat:@"'phone'=> '15920198662','type'=> '0'"];
+    //    [params setObject:@"15920198662" forKey:@"user_name"];
+    //
+    //    [params setObject:@"123456" forKey:@"password"];
+    
+    //设置请求体
+    //    NSDictionary *dict = @{@"phone":@"15920198662"};
+    NSMutableDictionary* params = [NSMutableDictionary dictionary];
+    //    [params setObject:@"15920198662" forKey:@"user_name"];
+    //    _userName.text = @"15920198662";
+    //    _passWord.text = @"123456";
+    //    pay_type = ON;sanfan
+    //    YES pinguo
+    
+    //    用户ID
+    [params setObject:@"100002796" forKey:@"uid"];
+    
+    //    用户名
+    [params setObject:@"15920198662" forKey:@"user_name"];
+
+//    游戏角色ID
+    [params setObject:@"2345" forKey:@"role_id"];
+    //    角色名
+    [params setObject:@"IDFA" forKey:@"role_name"];
+    
+//    广告ID
+    [params setObject:@"0" forKey:@"adv_id"];
+    //    0: IOS
+    [params setObject:@"0" forKey:@"platform_id"];
+    
+    //    主游戏ID
+    [params setObject:@"1" forKey:@"gid"];
+    //    子游戏ID
+    [params setObject:@"1044"  forKey:@"sub_gid"];
+    //    游戏等级
+    [params setObject:@"5" forKey:@"game_grade"];
+    //    渠道ID
+    [params setObject:@"0" forKey:@"channel_id"];
+    
+//    区服ID
+    [params setObject:@"3" forKey:@"cp_server_id"];
+//    区服名
+    [params setObject:@"guofu" forKey:@"server_name"];
+//    vip
+    [params setObject:@"2" forKey:@"vip"];
+    //游戏币
+    [params setObject:@"20" forKey:@"game_coin"];
+
+
+
+
+    [params setObject:@"0.1" forKey:@"pay_money"];
+    [params setObject:@"IDFA" forKey:@"product_name"];
+
+    [params setObject:@"2.0.5" forKey:@"game_ver"];
+
+    
+    //    [self varName_game_version]
+    NSString *data = [self DictToJson:params];
+    request.HTTPBody = [data dataUsingEncoding:NSUTF8StringEncoding];
+    
+    //6根据会话创建一个task（发送请求）
+    
+    //    第一个参数：请求对象
+    //    27      第二个参数：completionHandler回调（请求完成【成功|失败】的回调）
+    //    28                 data：响应体信息（期望的数据）
+    //    29                 response：响应头信息，主要是对服务器端的描述
+    //    30                 error：错误信息，如果请求失败，则error有值
+    
+    
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        //        NSLog(@"post dic = %@",dic);
+        NSLog(@"dic是%@",dic);
+        
+        
+    }];
+    //开始任务
+    [dataTask resume];
+}
+
 
 
 #pragma mark 找回密码
@@ -437,7 +685,13 @@
     
     return jsonString;
 }
-    
+
+-(NSString*)varName_game_version{
+    NSDictionary *varName_infoDict = [[NSBundle mainBundle] infoDictionary];
+    NSString *varName_versionString = varName_infoDict[@"CFBundleShortVersionString"];
+    return varName_versionString;
+}
+
 #pragma mark 懒加载
 /** manager属性的懒加载 */
 -(AFHTTPSessionManager *)manager{

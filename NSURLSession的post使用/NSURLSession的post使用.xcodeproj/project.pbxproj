@@ -85,7 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				3E3E29D920B3C76C0045BBDE /* AFNetworking */,
-				3E3E29D220B3BA700045BBDE /* Printing */,
+				3E3E29D220B3BA700045BBDE /* NSLog中文 */,
 				20A1A90B1D3B5F9F00D0DBDD /* AppDelegate.h */,
 				20A1A90C1D3B5F9F00D0DBDD /* AppDelegate.m */,
 				20A1A90E1D3B5F9F00D0DBDD /* ViewController.h */,
@@ -107,7 +107,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		3E3E29D220B3BA700045BBDE /* Printing */ = {
+		3E3E29D220B3BA700045BBDE /* NSLog中文 */ = {
 			isa = PBXGroup;
 			children = (
 				3E3E29D320B3BA700045BBDE /* NSDictionary+XHLogHelper.h */,
@@ -115,7 +115,7 @@
 				3E3E29D520B3BA700045BBDE /* NSArray+logChinese.m */,
 				3E3E29D620B3BA700045BBDE /* NSDictionary+XHLogHelper.m */,
 			);
-			path = Printing;
+			path = "NSLog中文";
 			sourceTree = "<group>";
 		};
 		3E3E29D920B3C76C0045BBDE /* AFNetworking */ = {
